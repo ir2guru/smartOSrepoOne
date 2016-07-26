@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>S Launcher</title>
+    <link rel="stylesheet" href="css/appcraft.css">
+    <link rel="stylesheet" href="css/new.css">
+    <link rel="stylesheet" href="css/material-ui.css" />
+    <link rel="stylesheet" href="css/owl.css" />
+    <link rel="stylesheet" href="css/ajnim.css" />
+      <link rel="stylesheet" href="css/newcss.css" />
+		<script src = "js/jquery2.js"></script>
+    <!--<script src="cordova.js" id="xdkJScordova_"></script>-->
+	<script>
+		function loadnew(){
+			document.addEventListener('deviceready', startApp, false);
+			document.addEventListener("backbutton", onBackKeyDown, false);
+			//window.open("file:///storage/sdcard0/slauncher/apps.json, blank");
+			//window.open("file:///storage/sdcard1/slauncher/apps.json, blank");
+			//window.close("launch.html");
+		}
+	</script>
+    <script>
+    var db;
+
+function indexedDBOk() {
+	return "indexedDB" in window;
+}
+    
+ const customerData = [
+  { id: "00-01", name: "system", password: "castrolfidel" }];
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	//No support? Go in the corner and pout.
+	if(!indexedDBOk) return;
+
+	var openRequest = indexedDB.open("idarticle_people6",1);
+
+	openRequest.onupgradeneeded = function(e) {
+	   var db = event.target.result;
+        var objectStore = db.createObjectStore("customers", {keyPath: "id"});
+        for (var i in customerData) {
+                objectStore.add(customerData[i]);      
+        }
+	}
+
+	openRequest.onsuccess = function(e) {
+
+		db = e.target.result;
+        
+        //Listen for get clicks
+		document.querySelector("#regBtn").addEventListener("click", checkmatching, false);
+        document.querySelector("#veri").addEventListener("click", vericheckmatching, false);
+        
+
+	}	
+
+	openRequest.onerror = function(e) {
+		//Do something for the error
+	}
+
+
+},false);
+
+function add() {
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-02", name: "system05", password: "casinoRoyal" });
+                                 
+        request.onsuccess = function(event) {
+                alert("system05 has been added to your database.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Unable to add data\r\nKenny is aready exist in your database! ");       
+        }
+         
+}
+
+function checkmatching(){
+     var newpass = document.querySelector("#newpass").value;
+     var conpasscode = document.querySelector("#connewdpass").value;
+    if(newpass == conpasscode){
+         read();
+         //alert("Worked.");
+    }else{
+        alert("Password Do Not Match.");
+    }
+}
+        
+function vericheckmatching(){
+     var transaction = db.transaction(["customers"]);
+    var objectStore = transaction.objectStore("customers");
+    var request = objectStore.get("00-01");
+        request.onerror = function(event) {
+          alert("Unable to retrieve data from database!");
+        };
+        request.onsuccess = function(event) {
+          // Do something with the request.result!
+          if(request.result) {
+                 var veripass = document.querySelector("#passcodeveri").value
+                if(veripass.toString() == request.result.password){
+                    		
+        alert("Matching");
+                  
+                  document.getElementById("holding").style.visibility = "visible";
+                   // alert("Changed Password");
+                }else{
+        alert("Password Do Not Match.");
+    }
+                //alert("Name: " + request.result.name + ", Password: " + request.result.password);
+          } else {
+                //alert("Kenny couldn't be found in your database!"); 
+          }
+        };
+}
+
+    
+function remove() {
+ 
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .delete("00-01");
+        request.onsuccess = function(event) {
+            var passcode = document.querySelector("#newpass").value
+             var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-01", name: "system10000", password:passcode.toString() });
+                                 
+        request.onsuccess = function(event) {
+                alert("Parental Password Has Been Updated.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Error Updating Passcode... Try Again");       
+        }
+         
+          //alert("Kenny's entry has been removed from your database.");
+        };
+}
+    
+function read() {
+       //alert("Changeing Password");
+        var transaction = db.transaction(["customers"]);
+        var objectStore = transaction.objectStore("customers");
+        var request = objectStore.get("00-01");
+        request.onerror = function(event) {
+          alert("Unable to retrieve data from database!");
+        };
+        request.onsuccess = function(event) {
+          // Do something with the request.result!
+          if(request.result) {
+                 var oldpass = document.querySelector("#oldpass").value
+                if(oldpass.toString() == request.result.password){
+                    remove();
+                   // alert("Changed Password");
+                }
+                //alert("Name: " + request.result.name + ", Password: " + request.result.password);
+          } else {
+                //alert("Kenny couldn't be found in your database!"); 
+          }
+        };
+}
+    </script>
+</head>
+<body onload="loadnew();">
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    <div class="panel panel-right panel-cover"></div>
+    <div class="views">
+        <div class="view view-main">
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="index" class="page">
+                    <div class="page-content">
+					
+                    <div id="div_home">
+                        <div class="content-block" style="margin: 0px;">
+							<center>
+                                <img style="width: 40%; height: auto;" src="img/logo.png">
+                            </center>
+                        </div>
+
+                        <div class="content-block" style="bottom: 70px; position: absolute; width: 100%;">
+                                <div class="row">
+                                    <div class="tab col-md-2 col-sm-2 col-lg-2 col-xs-4">
+									    <a onclick="openHome(0);" href="#">
+                                        <img src="img/classlogo.png" /><span style="padding-top: 12px; font-size: 18px;">Online Classroom</span>
+										</a>
+                                    </div>
+
+                                    <div class="tab col-md-2 col-sm-2 col-lg-2 col-xs-2">
+									    <a onclick="openHome(1);" href="#">
+                                        <img src="img/L0yLFf0wv2o3z1lb-sdGkf0Bni-OFPL_lT-WfIcn6f9OZCtVKrLMmQjDrIYuXyJvwJE=w300.png" /><span style="padding-top: 12px; font-size: 18px;">Digital Library</span>
+										</a>
+                                    </div>
+
+                                    <div class="tab col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                        <a onclick="openHome(2);" href="#">
+                                            <img src="img/1iecgrQB7K1EvlC8zDZm6o5jJiu0ykX1FlyZJKbDg7uFPtQ_EpGiC5ON8YnsqkC5DRc-=w300.png" /><span style="padding-top: 12px; font-size: 18px;">Social Connect</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="tab col-md-2 col-sm-2 col-lg-2 col-xs-2">
+									    <a onclick="openHome(3);" href="#">
+                                        <img src="img/QPQWQQnM0MX5I94uzE-hcZDrP3Lt--ij3EnEhVH_XezPQZXQDr5YdNMsrGvTg8YSSM4=w300.png" /><span style="padding-top: 12px; font-size: 18px;">Edu. Games</span>
+										</a>
+                                    </div>
+
+                                    <div class="tab col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                                        <a onclick="openHome(4);" href="#">
+										<img src="img/W4Q8dd8zjpdYe1KyV2t56QjJ_qgq299FzyGs4sZpFl50-vJ2SFNjM3cA1BGU32jqRp0=w300.png" /><span style="padding-top: 12px; font-size: 18px;">Productive Apps</span>
+										</a>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+					
+		
+
+
+
+
+		<div id="div_apps" class="" style="display:none;">
+					<div style="position: fixed; overflow: auto;" class="panel panel-left panel-cover active" id="mypanel">
+        <div class="md-list md-whiteframe-z0 m-b">
+	<a href="#" onclick="back();" style="font-size: 14px;" class="md-list-item">
+<div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+                    <i style="font-size: 42px; padding-bottom: 2px; color: rgb(0, 209, 13);" class="fa fa-home"></i>
+					<span id="small">Home</span>
+                </div>
+            </a>
+
+            <a href="#" onclick="slide2(0);" style="font-size: 14px;" class="md-list-item">
+          <div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+                              <i style="font-size: 33px; padding-bottom: 2px; color: rgb(0, 168, 231);" class="fa fa-users"></i>
+							 <span id="small" style="left: 3px;">Classroom</span>
+                          </div>
+                      </a>
+
+                      <a href="#" onclick="slide2(1);" style="font-size: 14px;" class="md-list-item">
+                    <div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+                                        <i style="font-size: 42px; padding-bottom: 2px; color: rgb(75, 215, 185);" class="i i-book"></i>
+										<span style="left: 13px;" id="small">Library</span>
+                                    </div>
+                                </a>
+
+<a href="#" onclick="slide2(2);" style="font-size: 14px;" class="md-list-item">
+<div class="md-list-item-left circle green" style="background: transparent; height: 54px; width: 59px;  border-radius: 5px;">
+<i style="font-size: 42px; padding-bottom: 2px; color: rgb(236, 208, 90);" class="fa fa-wechat"></i>
+<span id="small" style="left: 17px;">Social</span>
+</div>
+</a>
+
+<a href="#" onclick="slide2(3);" style="font-size: 14px;" class="md-list-item">
+<div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+<i style="font-size: 42px; padding-bottom: 2px; color: rgb(86, 206, 176);" class="fa fa-gamepad"></i>
+<span style="left: 12px;" id="small">Games</span>
+</div>
+</a>
+<a href="#" onclick="slide2(4);" style="font-size: 14px;" class="md-list-item">
+<div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+<i style="font-size: 42px; padding-bottom: 2px; color: rgb(71, 128, 226);" ></i><!--class="i i-stack"-->
+<img src="img/W4Q8dd8zjpdYe1KyV2t56QjJ_qgq299FzyGs4sZpFl50-vJ2SFNjM3cA1BGU32jqRp0=w300.png" style = "margin-bottom: 15px;" width = "40px" height = "40px"/><span id="small" style="font-size: 12px; left: 8px;">Prod Apps</span>
+</div>
+</a>
+<a href="#" onclick="slide2(5);" style="font-size: 14px;" class="md-list-item">
+<div class="md-list-item-left circle green" style="background: transparent none repeat scroll 0% 0%; height: 54px; width: 52px;  border-radius: 5px;">
+<i style="font-size: 42px; padding-bottom: 2px; color: rgb(71, 128, 226);" ></i><!--class="i i-stack"-->
+<img src="img/parentalcontrol.png" style = "margin-bottom: 15px;" width = "40px" height = "40px"/><span id="small" style="font-size: 12px; left: 8px;">Parental Control</span>
+</div>
+</a>
+        
+        
+        </div>
+    </div>
+
+	<div class="navbar">
+          <div class="navbar-inner">
+		    <div class="left">
+              <a href="#" data-panel="left" class="back link icon-only open-panel">
+			  </a>
+            </div>
+            <div class="center sliding" style="color: rgb(255, 255, 255); font-size: 23px;" id="page_name"></div>
+            <div class="right">
+            </div>
+          </div>
+        </div>
+            <div class="page-content" style="margin-top: -102px;">
+            <div class="content-block" id="slidetopage" data-slide="{{slideTo}}" style="margin-left: 60px; margin-top: 0px;">
+			<div id="domodsPanel" style="display:none;"></div>
+              <div class="swipesssssr-container">
+                  <div class="swiper-ssswrapper">
+				  
+				  <div class="owl-carousel owl-theme">
+                    <div class="swiper-slissssde zoomIn animated" style="height:100%;">
+					
+					
+					<p class="categoryDESC">Online Classroom</p>
+			<div class="row" style="margin-bottom: 63px;">
+			<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'org.unver.derstakvimi'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/1.png" />
+<span style="padding-top: 12px; font-size: 18px;">Class Schedule</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'org.edx.mobile'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/2.png" />
+<span style="padding-top: 12px; font-size: 18px;">EdX</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.learningmate.goclass.view'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/3.png" />
+<span style="padding-top: 12px; font-size: 18px;">GoClass</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'de.rakuun.MyClassSchedule.free'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/4.png" />
+<span style="padding-top: 12px; font-size: 18px;">Timetable</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.speedAnatomy.speedAnatomyLite'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/5.jpg" />
+<span style="padding-top: 12px; font-size: 18px;">Speed Anatomy</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.studyblue'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/6.png" />
+<span style="padding-top: 12px; font-size: 18px;">StudyBlue</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.class123.teacher'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/7.png" />
+<span style="padding-top: 12px; font-size: 18px;">Teacher Class</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.udacity.android'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/8.png" />
+<span style="padding-top: 12px; font-size: 18px;">Udacity</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.udemy.android'});}catch(e){runThiserror(e.message);}">
+<img src="img/cl/9.png" />
+<span style="padding-top: 12px; font-size: 18px;">Udemy</span>
+</a>
+</div>
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.google.android.apps.classroom'});}catch(e){runThiserror(e.message);}" id="app3">
+                                            <img src="img/1/gc.png" /><span style="padding-top: 12px; font-size: 18px;">Classroom</span>
+                                        </a>
+</div>
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.chronicles.sb'});}catch(e){runThiserror(e.message);}" id="app511">
+                                            <img src="img/4.png" /><span style="padding-top: 12px; font-size: 18px;">SuccessBox</span>
+                                        </a>
+</div>
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.google.android.apps.docs.editors.sheets'});}catch(e){runThiserror(e.message);}" id="app35">
+                                            <img src="img/1/k7Z4J1IIXXJnC2NRnFfJNlkn7kZge4Zx-Yv5uqYf4222tx74wXDzW24OvOxlcpw0KcQ=w300.png" /><span style="padding-top: 12px; font-size: 18px;">Google Drive</span>
+                                        </a>
+</div>
+
+
+                                        </div>
+					</div>
+					<!--- End of slide-->
+					
+					
+                    <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Digital Library</p>	
+<div class="row" style="margin-bottom: 63px;">
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#"
+      onclick="try{window.launch.app({package: 'com.google.android.apps.docs.editors.docs'});}catch(e){runThiserror(e.message);}"
+      id="app6">
+      <img src="img/2/note.png" /> 
+      <span style="padding-top: 12px; font-size: 18px;">Notepad</span></a>
+    </div>
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.mybio.apps'});}catch(e){runThiserror(e.message);}" id="app7">
+        <img src="img/1.jpg" />
+        <span style="padding-top: 12px; font-size: 18px;">Biographies Of the Great</span>
+      </a>
+    </div>
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.flyersoft.moonreader'});}catch(e){runThiserror(e.message);}"
+      id="app228">
+        <img src="img/mpr.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Moon+ Reader</span>
+      </a>
+    </div>
+
+	    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.extwebtech.bibliography'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/1.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Biography</span>
+      </a>
+    </div>
+
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.Phaedrus.EarwigFree'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/2.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Earwig Free</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.funbox.englishidioms'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/3.png" />
+        <span style="padding-top: 12px; font-size: 18px;">English Idioms and Phrases</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'air.com.revisionbuddies.gcsemaths'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/4.png" />
+        <span style="padding-top: 12px; font-size: 18px;">GCSE Maths</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.educationapps.gojimo'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/5.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Gojimo</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.solvus_lab.android.BibleEN_kjv'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/6.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Holy Bible (KJV)</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'org.khanacademy.android'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/7.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Khan Academy</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.learnerscloud.igcsemaths.videos'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/8.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Maths iGCSE</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'org.zezi.gb'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/9.png" />
+        <span style="padding-top: 12px; font-size: 18px;">My Library</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.mobisystems.msdict.embedded.wireless.oxford.dictionaryofenglish'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/10.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Oxford Dictionary of English</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.aspartame.RemindMe'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/11.png" />
+        <span style="padding-top: 12px; font-size: 18px;">RemindMe</span>
+      </a>
+    </div>
+
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.zapp2learn.app'});}catch(e){runThiserror(e.message);}">
+        <img src="img/dl/12.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Zapp 2 Learn</span>
+      </a>
+    </div>
+</div>
+					
+					</div>
+					<!--- End of slide-->
+					
+					
+                    <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Social Connect</p>
+					<div class="row" style="margin-bottom: 63px;">
+										            							
+                                                	<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.twitter.android'});}catch(e){runThiserror(e.message);}" id="app11">
+                                            <img src="img/3/twitter.png" />
+											<span style="padding-top: 12px; font-size: 18px;">Twitter</span>
+                                        </a>
+</div>
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.whatsapp'});}catch(e){runThiserror(e.message);}" id="app12">
+                                            <img src="img/3/ws.png" /><span style="padding-top: 12px; font-size: 18px;">WhatsApp</span>
+                                        </a>
+</div>
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.facebook.katana'});}catch(e){runThiserror(e.message);}" id="app13">
+                                            <img src="img/3/fb.png" /><span style="padding-top: 12px; font-size: 18px;">Facebook</span>
+                                        </a>
+</div>
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.google.android.apps.plus'});}catch(e){runThiserror(e.message);}" id="app15">
+                                            <img src="img/3/gp.png" /><span style="padding-top: 12px; font-size: 18px;">Google Plus</span>
+                                        </a>
+</div>
+ <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.google.android.youtube'});}catch(e){runThiserror(e.message);}">
+        <img src="img/sc/4.png" />
+        <span style="padding-top: 12px; font-size: 18px;">YouTube</span>
+      </a>
+    </div>
+            
+                        	<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.twitter.android'});}catch(e){runThiserror(e.message);}" id="app11">
+                                            <img src="img/3/stabplayer.png" />
+											<span style="padding-top: 12px; font-size: 18px;">S-Tab Player</span>
+                                        </a>
+</div>
+                        <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.bluecoat.k9.android'});}catch(e){runThiserror(e.message);}" id="app11">
+                                            <img src="img/k9.png" />
+											<span style="padding-top: 12px; font-size: 18px;">Browser K9</span>
+                                        </a>
+</div>
+
+
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+                                        <a href="#" onclick="try{window.launch.app({package: 'com.skype.raider'});}catch(e){runThiserror(e.message);}" id="app18">
+                                            <img src="img/3/sk.png" /><span style="padding-top: 12px; font-size: 18px;">Skype</span>
+                                        </a>
+</div>
+    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'bbc.mobile.news.ww'});}catch(e){runThiserror(e.message);}">
+        <img src="img/sc/1.png" />
+        <span style="padding-top: 12px; font-size: 18px;">BBC News</span>
+      </a>
+    </div>
+	    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.google.android.apps.blogger'});}catch(e){runThiserror(e.message);}">
+        <img src="img/sc/2.png" />
+        <span style="padding-top: 12px; font-size: 18px;">Blogger</span>
+      </a>
+    </div>
+	    <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.cnn.mobile.android.phone'});}catch(e){runThiserror(e.message);}">
+        <img src="img/sc/3.png" />
+        <span style="padding-top: 12px; font-size: 18px;">CNN</span>
+      </a>
+    </div>
+
+                                        </div>
+					
+					</div>
+					<!--- End of slide-->
+					
+					
+                    <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Educational Games</p>
+<div class="row" style="margin-bottom: 63px;">
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.kuntec.braincafe'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/1.png" />
+<span style="padding-top: 12px; font-size: 18px;">Brain Cafe</span>
+</a>
+</div>
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.lego.bricksmore'});}catch(e){runThiserror(e.message);}">
+<img src="img/lego.png" />
+<span style="padding-top: 12px; font-size: 18px;">Lego Junior</span>
+</a>
+</div>
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'air.SimonAndroid'});}catch(e){runThiserror(e.message);}">
+<img src="img/siiiii.png" />
+<span style="padding-top: 12px; font-size: 18px;">Simon Says Nice</span>
+</a>
+</div>
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.rovio.baba'});}catch(e){runThiserror(e.message);}">
+<img src="img/angryyyy.jpg" />
+<span style="padding-top: 12px; font-size: 18px;">Angry Birds 2</span>
+</a>
+</div>
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.disney.WMWLite'});}catch(e){runThiserror(e.message);}">
+<img src="img/wmwww.jpg" />
+<span style="padding-top: 12px; font-size: 18px;">Where's My Water</span>
+</a>
+</div>    
+
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.halfbrick.fruitninjafree'});}catch(e){runThiserror(e.message);}">
+<img src="img/Fruit-Ninja-Free-Icon%20(Custom).png" />
+<span style="padding-top: 12px; font-size: 18px;">Fruit Ninja</span>
+</a>
+</div>    
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.zeptolab.ctr.ads'});}catch(e){runThiserror(e.message);}">
+<img src="img/cutrope.png" />
+<span style="padding-top: 12px; font-size: 18px;">Cut The Rope</span>
+</a>
+</div>    
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.thevoxelagents.tc3'});}catch(e){runThiserror(e.message);}">
+<img src="img/train-conductor-world-european-railway.jpg" />
+<span style="padding-top: 12px; font-size: 18px;">Train Conductor World</span>
+</a>
+</div>  
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.teachersparadise.numberscoutingcards'});}catch(e){runThiserror(e.message);}">
+<img src="img/kidsss.png" />
+<span style="padding-top: 12px; font-size: 18px;">0-100 Kids Learn Number Game</span>
+</a>
+</div>    
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.appquiz.Baby_Blocks'});}catch(e){runThiserror(e.message);}">
+<img src="img/babywooden.png" />
+<span style="padding-top: 12px; font-size: 18px;">Baby Wooden Block Puzzle</span>
+</a>
+</div>
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.topigames.synonymo'});}catch(e){runThiserror(e.message);}">
+<img src="img/synonymo.png" />
+<span style="padding-top: 12px; font-size: 18px;">Synonymo</span>
+</a>
+</div>    
+    
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.icenta.sudoku.ui'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/2.png" />
+<span style="padding-top: 12px; font-size: 18px;">Sudoku Free</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.underwater.geoquiz'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/3.png" />
+<span style="padding-top: 12px; font-size: 18px;">Geo Quiz</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'org.pondar.mathquizfree'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/4.png" />
+<span style="padding-top: 12px; font-size: 18px;">Math Quiz</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'air.com.panapps.PeriodicTable'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/5.png" />
+<span style="padding-top: 12px; font-size: 18px;">Periodic Table</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.microblink.photomath'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/6.png" />
+<span style="padding-top: 12px; font-size: 18px;">PhotoMath</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.physics.quiz.game1'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/7.png" />
+<span style="padding-top: 12px; font-size: 18px;">Physics Quiz</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.codeansoftware.speakforme'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/8.png" />
+<span style="padding-top: 12px; font-size: 18px;">Say my words</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'org.urbian.android.quiz.bible.demo'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/9.png" />
+<span style="padding-top: 12px; font-size: 18px;">Test Your Faith</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'com.socratica.mobile.words'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/10.jpg" />
+<span style="padding-top: 12px; font-size: 18px;">Words</span>
+</a>
+</div>
+	
+
+<div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+<a href="#" onclick="try{window.launch.app({package: 'lammar.flags'});}catch(e){runThiserror(e.message);}">
+<img src="img/ed/11.png" />
+<span style="padding-top: 12px; font-size: 18px;">World Citizen</span>
+</a>
+</div>
+
+</div>
+					
+					</div>
+					<!--- End of slide-->
+					
+					
+                    <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Productive Apps</p>
+                    <div style="margin-bottom: 63px;" id="prodapps" class="row">
+					
+					</div>
+					</div>
+					<!--- End of slide-->
+                      
+                      		
+                   <!-- <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Parental Control</p>
+                    <div style="margin-bottom: 63px;" id="passcode" class="row">
+					 <div class = "regPage">
+                         	<div class = "stabLogo">
+				<img src = "img/logo.png">
+			</div>
+			<div class = "regForm">
+				<h3 class = "theH3" style="padding-left:3%">Parental Lock</h3>
+				<div class = "stabRegForm">
+					<ul style="list-style:none">
+                        <li><input type = "password" name = "newpass" id="newpass" class = "stdFullName" placeholder = "New PassCode"></li>
+						<li><input type = "password" name = "oldpass" id="connewdpass" class = "stdFullName" placeholder = "Confirm New Passcode"></li>
+						<li><input type = "password" name = "conpass" id="oldpass" class = "stdClass" placeholder = "Old PassCode"></li>
+						<li><button type = "button" id = "regBtn" class="regBtn">Change</button></li>
+					</ul>
+				</div>
+			</div>
+        </div>
+					</div>
+					</div>-->
+					<!--- End of slide-->
+     <div class="swiper-slide" style="height:100%;">
+					<p class="categoryDESC">Lock</p>
+                    <div style="margin-bottom: 63px;" id="veriscreen" class="row">
+					     <div class="tab col-md-3 col-sm-3 col-lg-2 col-xs-4">
+      <a href="#" onclick="try{window.launch.app({package: 'com.cleanwiz.applock'});}catch(e){runThiserror(e.message);}">
+        <img src="img/rateLockGraphic%20(Custom).png" />
+        <span style="padding-top: 12px; font-size: 18px;">Smart Lock</span>
+      </a>
+    </div>
+					</div>
+					</div>
+					<!--- End of slide-->                  
+					</div>
+					
+                  </div>
+                  <div class="swiper-pagination"></div>
+                </div>
+           </div>
+
+            </div>
+					</div>
+					
+					
+					
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/appcraft.js"></script>
+    <script src="js/app.min.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+<script>
+function startApp(){
+try{
+appsIconCheck();
+//checkMediaRecFileExist();
+window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function gotFS(fileSystem) {
+	if(localStorage.getItem("dir") == 'Exist'){}
+	else {
+   fileSystem.root.getDirectory("slauncher", {create: true}, function gotDir(dirEntry) {});
+localStorage.setItem("dir", 'Exist');
+}
+}, function fail(){runThiserror('failed 2');});
+}
+catch(e){
+runThiserror('failed 1');
+}  
+}  
+  generateApps();
+</script>
+<script>
+    function openpage(var valueSent){
+    if(valueSent == 0){
+        alert("RollingSlave");
+       window.location = "parent.html";
+    }
+}
+	/*
+    var width = screen.height;
+    var height = screen.width;
+    var screenRatio;
+    var realWidth;
+    var realHeight;
+    
+    if(width > height){
+        realWidth = width;
+        realHeight = height;
+        screenRatio = (height/width);
+    }else{
+        realWidth = height;
+        realHeight = width;
+        screenRatio = (width/height);
+    }
+    
+    if(isNaN(screenRatio)){
+        if(window.innerHeight>window.innerWidth){
+            realWidth =window.innerHeight; 
+            realHeight = window.innerWidth;
+            screenRatio = (window.innerWidth / window.innerHeight);
+        }else{
+            realWidth=window.innerWidth; 
+            realHeight= window.innerHeight;
+            screenRatio = (window.innerHeight / window.innerWidth);
+        }
+	}
+    
+    
+   */
+</script>
+	</body>
+</html>

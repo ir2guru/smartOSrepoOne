@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>S Launcher</title>
+		<link rel = "stylesheet" href = "css/reg.css">
+		<script src = "js/jquery2.js"></script>
+	</head>
+	<body>
+		<div class = "regPage">
+			<div class = "stabLogo">
+				<img src = "img/logo.png">
+			</div>
+			<div class = "regForm">
+				<h3 class = "theH3">Student Registration</h3>
+				<form class = "stabRegForm">
+					<ul>
+						<li><input type = "text" name = "stdFullName" class = "stdFullName" placeholder = "Student Full Name"></li>
+						<li><input type = "text" name = "stdClass" class = "stdClass" placeholder = "Class"></li>
+						<li><input type = "text" name = "stdParPhone" class = "stdParPhone" placeholder = "Parent's Phone"></li>
+						<li><input type = "text" name = "stdParEmail" class = "stdParEmail" placeholder = "Parent's Email"></li>
+						<li class = "actCodeArea"><h3>Activation Code</h3></li>
+						<li><input type = "text" name = "actvCode" class = "actvCode" placeholder = "Enter Activation Code Here"></li>
+						<li><button type = "button" class = "regBtn">Register</button></li>
+					</ul>
+				</form>
+                <div class = "continueBtn">
+                    <p>Continue</p>
+                </div>
+			</div>
+		</div>
+		<script src = "js/reg.js"></script>
+        <script type="text/javascript">
+            localStorage.removeItem("connStatus");
+
+            function wholeChecker(){
+                  var checkImage = new Image(); 
+                  checkImage.onload = checkingImg;
+                function checkingImg(){ 
+                     //alert(" External internet connection. You are connected to the internet. ");
+                     localStorage.setItem("connStatus", "connected");
+                    return true;
+                }
+                  checkImage.src = "http://www.google.com/images/srpr/nav_logo80.png?" + new Date().getTime(); 
+                    //alert(" External internet connection. You are not connected to the internet. ");
+                localStorage.setItem("connStatus", "Not connected");
+            }
+              
+            
+            function checkingConn(){
+                var connStatus = localStorage.getItem("connStatus");
+                if(connStatus == "connected"){
+                //if(checkingImg() == true){
+                    //alert("Connected!");
+                }else{
+                    //alert("Not connected!");
+                }
+            }
+            
+            setInterval(checkingConn, 5000);
+            setInterval(wholeChecker, 2000);
+        </script>
+	</body>
+</html>	

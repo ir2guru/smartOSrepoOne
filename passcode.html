@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+</head>
+    
+<body>
+
+<script>
+var db;
+
+function indexedDBOk() {
+	return "indexedDB" in window;
+}
+    
+ const customerData = [
+  { id: "00-01", name: "system", password: "castrolfidel" }];
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	//No support? Go in the corner and pout.
+	if(!indexedDBOk) return;
+
+	var openRequest = indexedDB.open("idarticle_people6",1);
+
+	openRequest.onupgradeneeded = function(e) {
+	   var db = event.target.result;
+        var objectStore = db.createObjectStore("customers", {keyPath: "id"});
+        for (var i in customerData) {
+                objectStore.add(customerData[i]);      
+        }
+	}
+
+	openRequest.onsuccess = function(e) {
+
+		db = e.target.result;
+        
+        alert("User Was Created Successfully.");
+		//Listen for get clicks
+		document.querySelector("#read").addEventListener("click", read, false);
+        
+        //Listen for get clicks
+		document.querySelector("#add").addEventListener("click", add, false);
+        
+          //Listen for get clicks
+		document.querySelector("#update").addEventListener("click", remove, false);
+        
+
+
+	}	
+
+	openRequest.onerror = function(e) {
+		//Do something for the error
+	}
+
+
+},false);
+
+function add() {
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-02", name: "system05", password: "casinoRoyal" });
+                                 
+        request.onsuccess = function(event) {
+                alert("system05 has been added to your database.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Unable to add data\r\nKenny is aready exist in your database! ");       
+        }
+         
+}
+    
+function remove() {
+ 
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .delete("00-01");
+        request.onsuccess = function(event) {
+            var passcode = document.querySelector("#passcode").value
+             var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-01", name: "system10000", password:passcode.toString() });
+                                 
+        request.onsuccess = function(event) {
+                alert("system10000 has been added to your database.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Unable to add data\r\nKenny is aready exist in your database! ");       
+        }
+         
+          //alert("Kenny's entry has been removed from your database.");
+        };
+}
+    
+function read() {
+        var transaction = db.transaction(["customers"]);
+        var objectStore = transaction.objectStore("customers");
+        var request = objectStore.get("00-01");
+        request.onerror = function(event) {
+          alert("Unable to retrieve daa from database!");
+        };
+        request.onsuccess = function(event) {
+          // Do something with the request.result!
+          if(request.result) {
+                alert("Name: " + request.result.name + ", Password: " + request.result.password);
+          } else {
+                alert("Kenny couldn't be found in your database!"); 
+          }
+        };
+}
+
+</script>
+<input type="password" id="passcode" name="passcode"><br>
+<button id="add">Add</button>
+<button id="update">update</button>
+<button id="read">Get</button>
+
+<p/>
+
+</body>
+</html>

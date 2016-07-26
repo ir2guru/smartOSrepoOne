@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>S Launcher</title>
+		<link rel = "stylesheet" href = "css/reg.css">
+		<script src = "js/jquery2.js"></script>
+        <script src = "js/passcode.js"></script>
+	</head>
+	<body id="parent">
+        
+<script>
+var db;
+
+function indexedDBOk() {
+	return "indexedDB" in window;
+}
+    
+ const customerData = [
+  { id: "00-01", name: "system", password: "castrolfidel" }];
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	//No support? Go in the corner and pout.
+	if(!indexedDBOk) return;
+
+	var openRequest = indexedDB.open("idarticle_people6",1);
+
+	openRequest.onupgradeneeded = function(e) {
+	   var db = event.target.result;
+        var objectStore = db.createObjectStore("customers", {keyPath: "id"});
+        for (var i in customerData) {
+                objectStore.add(customerData[i]);      
+        }
+	}
+
+	openRequest.onsuccess = function(e) {
+
+		db = e.target.result;
+        
+        //Listen for get clicks
+		document.querySelector("#regBtn").addEventListener("click", checkmatching, false);
+
+	}	
+
+	openRequest.onerror = function(e) {
+		//Do something for the error
+	}
+
+
+},false);
+
+function add() {
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-02", name: "system05", password: "casinoRoyal" });
+                                 
+        request.onsuccess = function(event) {
+                alert("system05 has been added to your database.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Unable to add data\r\nKenny is aready exist in your database! ");       
+        }
+         
+}
+
+function checkmatching(){
+     var newpass = document.querySelector("#newpass").value;
+     var conpasscode = document.querySelector("#connewdpass").value;
+    if(newpass == conpasscode){
+         read();
+         alert("Worked.");
+    }else{
+        alert("Didn't Work.");
+    }
+}
+    
+function remove() {
+ 
+        var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .delete("00-01");
+        request.onsuccess = function(event) {
+            var passcode = document.querySelector("#newpass").value
+             var request = db.transaction(["customers"], "readwrite")
+                .objectStore("customers")
+                .add({id: "00-01", name: "system10000", password:passcode.toString() });
+                                 
+        request.onsuccess = function(event) {
+                alert("Parental Password Has Been Updated.");
+        };
+         
+        request.onerror = function(event) {
+                alert("Unable to add data\r\nKenny is aready exist in your database! ");       
+        }
+         
+          //alert("Kenny's entry has been removed from your database.");
+        };
+}
+    
+function read() {
+       //alert("Changeing Password");
+        var transaction = db.transaction(["customers"]);
+        var objectStore = transaction.objectStore("customers");
+        var request = objectStore.get("00-01");
+        request.onerror = function(event) {
+          alert("Unable to retrieve daa from database!");
+        };
+        request.onsuccess = function(event) {
+          // Do something with the request.result!
+          if(request.result) {
+                 var oldpass = document.querySelector("#oldpass").value
+                if(oldpass.toString() == request.result.password){
+                    remove();
+                   // alert("Changed Password");
+                }
+                //alert("Name: " + request.result.name + ", Password: " + request.result.password);
+          } else {
+                //alert("Kenny couldn't be found in your database!"); 
+          }
+        };
+}
+
+</script>
+        <div class = "regPage">
+			<div class = "stabLogo">
+				<img src = "img/logo.png">
+			</div>
+			<div class = "regForm">
+				<h3 class = "theH3">Parental Lock</h3>
+				<div class = "stabRegForm">
+					<ul>
+                        <li><input type = "password" name = "newpass" id="newpass" class = "stdFullName" placeholder = "New PassCode"></li>
+						<li><input type = "password" name = "oldpass" id="connewdpass" class = "stdFullName" placeholder = "Confirm New Passcode"></li>
+						<li><input type = "password" name = "conpass" id="oldpass" class = "stdClass" placeholder = "Old PassCode"></li>
+						<li><button type = "button" id = "regBtn" class="regBtn">Change</button></li>
+					</ul>
+				</div>
+			</div>
+        </div>
+    </body>
+</html>
