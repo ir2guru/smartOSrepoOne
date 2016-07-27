@@ -76,7 +76,7 @@ runThiserror("error");
 }
 
 
-var p1 = "sapps.json";
+var p1 = "apps.json";
 var p2 = "apps.json";
 
 //var p1 = "file:///sdcard/slauncher/apps.json";
