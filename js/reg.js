@@ -73,7 +73,7 @@ function checkFields(){
 	}else{
 		var connStatus1 = localStorage.getItem("connStatus");
         var state = navigator.connection.type;
-        if (state == window.Connection.NONE)
+        if (state == Connection.NONE)
         {
     // doesn't have internet, notify
               alert("Please turn on your internet connection to register!");
