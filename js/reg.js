@@ -79,7 +79,7 @@ function checkFields(){
             
         }else{
             alert("Please turn on your internet connection to register!");
-              //saveDetails();
+              saveDetails();
         }
         
 	}
@@ -88,7 +88,7 @@ function checkFields(){
 	
 		$.ajax
 		({type:"POST",
-		  url: "http://www.chroniclesoft.com/stabRegistration.php", 
+		  url: "http://www.chroniclesoft.com/stabRegistrationtr.php", 
 		  data:$(".stabRegForm").serialize(), 
 
 			dataType: "json",
