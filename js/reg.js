@@ -72,18 +72,15 @@ function checkFields(){
 		alert("Parent's Email Field is empty!");
 	}else{
 		var connStatus1 = localStorage.getItem("connStatus");
-        var state = navigator.connection.type;
-        if (state == Connection.NONE)
-        {
-    // doesn't have internet, notify
-              alert("Please turn on your internet connection to register!");
-
-        }
-        else
-        {
-    // has internet, continue work accessing internet
+        alert(connStatus1);
+        if(connStatus1 == "connected"){
             saveDetails();
+            
+        }else{
+           // alert("Please turn on your internet connection to register!");
+              saveDetails();
         }
+        
 	}
 	
 	function saveDetails(){
