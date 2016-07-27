@@ -3,9 +3,10 @@ function startApp(){
     
     var checkAppStatus = localStorage.getItem("appStatus");
     if(checkAppStatus == "registered"){
-        ContBtnHandle("block");
+        //ContBtnHandle("block");
         stabLogoHandle();
         stabRegFormHandle("none");
+        openOS();
     }else{
         ContBtnHandle("none");
         stabRegFormHandle("block");
@@ -77,8 +78,8 @@ function checkFields(){
             saveDetails();
             
         }else{
-           // alert("Please turn on your internet connection to register!");
-              saveDetails();
+            alert("Please turn on your internet connection to register!");
+              //saveDetails();
         }
         
 	}
